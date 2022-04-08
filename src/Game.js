@@ -29,7 +29,22 @@ class Game extends React.Component {
       });
     }
 
-    const winner = this.calculateWinner(this.state.history.at(-1).squares);
+    // No need to show the last move in history
+    const moves = this.state.history.slice(0, -1).map((_, moveNum) => {
+      const description = moveNum ?
+        'Go to #' + moveNum :
+        'Back to start';
+
+      return (
+        <li key={moveNum}>
+          <button onClick={() => this.jumpTo(moveNum)}>{description}</button>
+        </li>
+      );
+    });
+
+    const winner = this.state.history.length > 0 ?
+      this.calculateWinner(this.state.history.at(-1).squares) :
+      null;
 
     const status = winner ?
       `Player ${winner} won` :
@@ -46,10 +61,17 @@ class Game extends React.Component {
         </div>
         <div className="game-info">
           <div>{status}</div>
-          <ol>{/* TODO */}</ol>
+          <ol>{moves}</ol>
         </div>
       </div>
     );
+  }
+
+  jumpTo(moveNum) {
+    this.setState({
+      history: this.state.history.slice(0, moveNum + 1),
+      xIsNext: moveNum % 2 === 0
+    });
   }
 
   calculateWinner(squares) {
