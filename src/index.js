@@ -4,8 +4,14 @@ import './index.css';
 
 class Square extends React.Component {
   render() {
+    const clickHandler = () =>
+      this.props.onClick(this.props.cellNum, 'X');
+
     return (
-      <button className="square">
+      <button
+        className="square"
+        onClick={clickHandler}
+      >
         {this.props.value}
       </button>
     );
@@ -13,8 +19,27 @@ class Square extends React.Component {
 }
 
 class Board extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      squares: Array(9).fill(null)
+    }
+  }
+
   renderSquare(i) {
-    return <Square />;
+    const onClickHandler = (i, value) => {
+      const squares = [...this.state.squares];
+      squares[i] = value;
+      this.setState({ squares });
+    }
+
+    return (
+      <Square
+        cellNum={i}
+        value={this.state.squares[i]}
+        onClick={onClickHandler}
+      />
+    );
   }
 
   render() {
