@@ -1,11 +1,8 @@
 import React from 'react';
 
 function Square(props) {
-  const clickHandler = () =>
-    props.onClick(props.cellNum, 'X');
-
   return (
-    <button className="square" onClick={clickHandler}>
+    <button className="square" onClick={props.onClick}>
       {props.value}
     </button>
   )
